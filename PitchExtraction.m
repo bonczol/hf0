@@ -1,9 +1,8 @@
-function pitch = PitchExtraction(filename) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Pitch Extraction from monophonic signals %%%%%%%%%%%%%%%
+function [pitch, f_time, load_time] = PitchExtraction(filename, convnet) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Pitch Extraction from monophonic signals %%%%%%%%%%%%%%%
 Fs = 16000; % Resampling frequency
-load('convModel.mat'); % The convolution network model
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Decoder Section %%%%%%%%%%
-[autocor,subBandAutocor, ~, peaks] = filterConstruction(filename, Fs);
+[autocor,subBandAutocor, ~, peaks, load_time, f_time] = filterConstruction(filename, Fs);
 feature = reshape(autocor,size(autocor,1),1,1,size(autocor,2));
 neighbours = 2;
 for i = 1+neighbours:size(feature,4)-neighbours

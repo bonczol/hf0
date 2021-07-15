@@ -1,12 +1,10 @@
 clear
 clc;
-%filename = 'C:\Users\KSRAO\Documents\Dataset\CMUwithGCI\CMU\bdl file\SPEECH\arctic_a0038_speech.wav';
-%filename = 'C:\Users\KSRAO\Documents\Dataset\LYRICS Dataset\LYRICS_16k_package\audio\B6-glis-2-notsure-a-mj.wav';
-%filename = 'C:\Users\KSRAO\Documents\Dataset\LYRICS Dataset\LYRICS_16k_package\audio\B4-cresc-u-G3-m1.wav';
-filename = 'C:\Users\KSRAO\Documents\Dataset\LYRICS Dataset\LYRICS_16k_package\audio\S3-vt-u-G4C5-f-m2.wav';
-pitch = PitchExtraction(filename);
-
 Fs = 16000;
+filename = 'C:\Users\Filip\Projects\master-thesis\data\processed\MIR-1k\Wavfile\Ani_1_01.wav'
+convnet = getfield(load('convModel.mat'), 'convnet')
+pitch = PitchExtraction(filename, convnet);
+
 a = miraudio(filename,'Sampling',Fs);
 a_v1 = mirgetdata(a);
 f = mirframe(a,'Length',0.05,'s','Hop',0.01,'s');
@@ -16,9 +14,9 @@ f_v1 = get(f,'FramePos');
 s_v2 = get(s,'Pos');
 
 figure
-spectrogram(a_v1,ceil(Fs*0.05),ceil(Fs*0.04),8192,Fs,'yaxis')
+[none1,none2,t] = spectrogram(a_v1,ceil(Fs*0.05),ceil(Fs*0.04),8192,Fs,'yaxis');
 % hold on;
-% ylim([0.05 2]); % To ensure frequencies between 50 Hz and 2 kHz are highlighted.
+ylim([0.05 0.4]); % To ensure frequencies between 50 Hz and 2 kHz are highlighted.
 hold on;
 if(f_v1{1,1}{1,1}(1,end) >= 60)
     plot(f_v1{1,1}{1,1}(1,:)./60, pitch./1000,'--r');
