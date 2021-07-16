@@ -1,12 +1,13 @@
-function [a1_v1, filt_a1_v1, timeInstants, p_v1, load_time, f_time] = filterConstruction(filename, Fs)
+function [a1_v1, filt_a1_v1, timeInstants, p_v1, load_time, f_time] = filterConstruction(waveform, Fs)
 
 tic;
-a = miraudio(filename,'Sampling',Fs);
+a = miraudio(waveform(:), Fs);
 load_time = toc;
 
 f = mirframe(a,'Length',0.05,'s','Hop',0.01,'s');
 f_time = get(f,'FramePos');
 f_time = f_time{1,1}{1,1}(1,:);
+f_time = f_time(:);
  
 a1 = mirautocor(f);
 a1_v1 = mirgetdata(a1);
